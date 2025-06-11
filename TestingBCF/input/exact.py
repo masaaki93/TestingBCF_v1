@@ -113,81 +113,83 @@ def q2p2_tols(params, tols, title, η = None, J = None, ωmax = None):
     ω0 = params[1]
     β = params[2]
 
-    with open(title + '_q2p2.csv', "a") as f:
+    # Nonzero temperature
+    if β > 0:
 
-        # Nonzero temperature
-        if β > 0:
+        q2 = 1 / (β * ω0)
+        p2 = 1 / (β * ω0)
 
-            q2 = 1 / (β * ω0)
-            p2 = 1 / (β * ω0)
+        def q2p2_series(k):
+            νk = 2 * np.pi * k / β
+            ζk = νk * η(νk).real / M
+            q2k = 2 / (β * ω0) * ω0 ** 2 / (ω0 ** 2 + νk ** 2 + ζk)
+            p2k = 2 / (β * ω0) * (ω0 ** 2 + ζk) / (ω0 ** 2 + νk ** 2 + ζk)
+            return q2k, p2k
 
-            def q2p2_series(k):
-                νk = 2 * np.pi * k / β
-                ζk = νk * η(νk).real / M
-                q2k = 2 / (β * ω0) * ω0 ** 2 / (ω0 ** 2 + νk ** 2 + ζk)
-                p2k = 2 / (β * ω0) * (ω0 ** 2 + ζk) / (ω0 ** 2 + νk ** 2 + ζk)
-                return q2k, p2k
+        k = 0
+        for i in range(len(tols)):
+            tol = tols[i]
+            while True:
+                k += 1
 
-            k = 0
-            for i in range(len(tols)):
-                tol = tols[i]
-                while True:
-                    k += 1
+                q2k, p2k = q2p2_series(k)
+                q2 += q2k
+                p2 += p2k
 
-                    q2k, p2k = q2p2_series(k)
-                    q2 += q2k
-                    p2 += p2k
+                tol_q2 = np.abs( q2k / q2 )
+                tol_p2 = np.abs( p2k / p2 )
 
-                    tol_q2 = np.abs( q2k / q2 )
-                    tol_p2 = np.abs( p2k / p2 )
+                if tol_q2 < tol and tol_p2 < tol:
+                    break
 
-                    if tol_q2 < tol and tol_p2 < tol:
-                        break
+            with open(title + '_q2p2.csv', "a") as f:
                 f.write(f'tol = {tol}' + '\n')
                 f.write(f'<q^2>_eq = {q2}' + '\n')
                 f.write(f'<p^2>_eq = {p2}' + '\n')
                 f.write('\n')
 
-                print(f'tol = {tols[i]}')
+            print(f'tol = {tols[i]}')
 
 
 
-        # Zero temperature
-        elif β == -1:
+    # Zero temperature
+    elif β == -1:
 
-            q2 = 0
-            p2 = 0
+        q2 = 0
+        p2 = 0
 
-            def ζ0(x):
-                return x * η(ω0 * x).real / (M * ω0)
+        def ζ0(x):
+            return x * η(ω0 * x).real / (M * ω0)
 
-            yq2 = lambda x: 1 / (x ** 2 + 1 + ζ0(x)) / np.pi
-            yp2 = lambda x: (1 + ζ0(x)) / (x ** 2 + 1 + ζ0(x)) / np.pi
+        yq2 = lambda x: 1 / (x ** 2 + 1 + ζ0(x)) / np.pi
+        yp2 = lambda x: (1 + ζ0(x)) / (x ** 2 + 1 + ζ0(x)) / np.pi
 
-            def q2p2_series(k):
-                return quad(yq2, (k-1), k)[0], quad(yp2, (k-1), k)[0]
+        def q2p2_series(k):
+            return quad(yq2, (k-1), k)[0], quad(yp2, (k-1), k)[0]
 
-            k = 0
-            for i in range(len(tols)):
-                tol = tols[i]
-                while True:
-                    k += 1
+        k = 0
+        for i in range(len(tols)):
+            tol = tols[i]
+            while True:
+                k += 1
 
-                    q2k, p2k = q2p2_series(k)
-                    q2 += q2k
-                    p2 += p2k
+                q2k, p2k = q2p2_series(k)
+                q2 += q2k
+                p2 += p2k
 
-                    tol_q2 = np.abs( q2k / q2 )
-                    tol_p2 = np.abs( p2k / p2 )
+                tol_q2 = np.abs( q2k / q2 )
+                tol_p2 = np.abs( p2k / p2 )
 
-                    if tol_q2 < tol and tol_p2 < tol:
-                        break
+                if tol_q2 < tol and tol_p2 < tol:
+                    break
+
+            with open(title + '_q2p2.csv', "a") as f:
                 f.write(f'tol = {tol}' + '\n')
                 f.write(f'<q^2>_eq = {q2}' + '\n')
                 f.write(f'<p^2>_eq = {p2}' + '\n')
                 f.write('\n')
 
-                print(f'tol = {tols[i]}')
+            print(f'tol = {tols[i]}')
 
 """
     Computing the expectation value of q^2 and p^2 for the total Gibbs state from η(t)
