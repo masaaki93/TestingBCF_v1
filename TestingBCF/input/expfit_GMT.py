@@ -179,6 +179,42 @@ def cost_ReLt(ps, c, μ, β, K_MT, t, Lt):
     return np.sum( (Lt.real - expfit.model_Lt(t, d, z).real) ** 2 ), np.hstack([grad_b_MT, grad_γ_MT, 0.])
 
 
+# ----------------------------------------
+#   Step 2: Pade decomposition (1 ≦ K_MT ≦ 5 for now)
+# ----------------------------------------
+
+def MT_Pade(c, μ, β, K_MT):
+
+    d_J, z_J = cμ_to_aJzJ(c, μ, β)
+
+    # [N-1/N] Pade coefficients (taken from [T. Ikeda & Y. Tanimura, JCTC 15, 2517 (2019).])
+    if K_MT == 1:
+        ν = (1/β) * np.array([7.745967])
+        η = np.array([2.5])
+    elif K_MT == 2:
+        ν = (1/β) * np.array([6.305939, 19.499618])
+        η = np.array([1.032824, 5.967176])
+    elif K_MT == 3:
+        ν = (1/β) * np.array([6.2832903, 12.9582867, 36.1192894])
+        η = np.array([1.000227, 1.300914, 11.198859])
+    elif K_MT == 4:
+        ν = (1/β) * np.array([6.283185, 12.579950, 20.562598, 57.787940])
+        η = np.array([1.000000, 1.015314, 1.905605, 18.079081])
+    elif K_MT == 5:
+        ν = (1/β) * np.array([6.283185, 12.566542, 19.004690, 29.579276, 84.536926])
+        η = np.array([1.000000, 1.000262, 1.113033, 2.800147, 26.586558])
+    else:
+        raise ValueError(f'K_MT = {K_MT} has not been implemented yet')
+
+    b_MT = 2*η/β * (1j * Jmod(1j*ν, c, μ)).real
+    γ_MT = ν
+
+    d = np.append(d_J, b_MT)
+    z = np.append(z_J, γ_MT)
+
+    return d, z, 0.
+
+
 
 # ----------------------------------------
 #   Model functions
