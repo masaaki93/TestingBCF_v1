@@ -87,7 +87,7 @@ exit()
 # expfit_GMT.plot_J(ωJ, data.J(ωJ), c, μ, f'{dir_name_GMT}/Jfit')
 #
 # ### Fitting Matsubara modes
-# K_MTs = [1,2,3,4,5,6,7,8,9,10]
+# K_MTs = [1,2,3,4,5]
 # LT = 1
 #
 # for j in range(len(K_MTs)):
@@ -99,6 +99,7 @@ exit()
 #         # d, z, η = expfit_GMT.MT_FD_fit(c, μ, β, K_MT, ω, LT = LT, opttype = 'integral')
 #         # d, z, η = expfit_GMT.MT_FD_fit(c, μ, β, K_MT, ω, LT = LT, opttype = 'points')
 #         d, z, η = expfit_GMT.MT_ReLt_fit(Lt_filename, c, μ, β, K_MT)
-#
+#         # d, z, η = expfit_GMT.MT_Pade(c, μ, β, K_MT)    # 1 ≦ K_MT ≦ 5
+# 
 #     d, z, K = expfit.regularization(d, z, 1e-10)
 #     expfit.savefile(Lt_filename, Lω_filename, d, z, η, K, f'{dir_name_GMT}/GMT_K{K}')
