@@ -278,7 +278,7 @@ def dz_to_cμ(d, z, tol = 1e-6):
     c = np.array([])
     μ = np.array([])
 
-    i_taken = np.array([], dtype=np.integer)
+    i_taken = np.array([], dtype=int)
     for i in range(len(d)):
         if i in i_taken:
             continue
