@@ -225,7 +225,7 @@ def savefile(Lt_filename, Lω_filename, d, z, η, K, filename):
 
 def write_exp_coeff(d, z, η, K, filename):
 
-    i_taken = np.array([], dtype=np.integer)
+    i_taken = np.array([], dtype=int)
 
     f = open(filename + '.csv', mode="w")
     f.write(str(K) + '\n')
@@ -371,7 +371,7 @@ def check_duplication(array, tol):
 
 def conjugate_pairing(array, tol):
 
-    i_taken = np.array([], dtype=np.integer)
+    i_taken = np.array([], dtype=int)
 
     K = 0
     for i in range(len(array)):
@@ -402,7 +402,7 @@ def zero_small_imaginary_parts(array, tol):
 
 def remove_zero(d, z, tol):
 
-    inds_zero = np.array([], dtype=np.integer)
+    inds_zero = np.array([], dtype=int)
     for i in range(len(d)):
         if np.abs(d[i]) < tol:
         # if np.abs(d[i]) == 0.:
