@@ -1,7 +1,7 @@
 import numpy as np
 import importlib
 import os
-from system import SD
+from settings import SD
 
 import input.expfit as expfit # For AAA and ESPRIT
 # import input.expfit_IP as expfit_IP # For IP. Install 'spectral_density_fit'.
