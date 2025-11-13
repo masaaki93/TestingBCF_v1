@@ -4,7 +4,7 @@ import os
 import input.exact as exact
 import matplotlib.pyplot as plt
 from scipy.integrate import simpson
-from system import SD, ω0v0
+from settings import SD, ω0v0
 
 import time
 
