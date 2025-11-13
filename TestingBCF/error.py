@@ -3,7 +3,7 @@ import importlib
 # import mpmath
 import input.expfit as expfit
 import os, re
-from system import SD
+from settings import SD
 
 ### spectral density name
 SD_name = SD()
