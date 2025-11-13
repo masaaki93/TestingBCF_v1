@@ -1,7 +1,7 @@
 import numpy as np
 import importlib
 import os, re
-from system import SD, ω0v0
+from settings import SD, ω0v0
 
 import time
 
