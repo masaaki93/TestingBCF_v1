@@ -11,7 +11,7 @@ Masaaki Tokieda, *Testing bath correlation functions for open quantum dynamics s
 The testing procedure consists of the following six steps:
 
 1. **Prepare the spectral density information**
-2. **Set system parameters and spectral density** (`system.py`)
+2. **Set system parameters and spectral density** (`settings.py`)
 3. **Compute exact solutions** (`exact.py`)
 4. **Construct model BCFs** (`fitting.py`)
 5. **Solve the HEOM** (`heom.py`)
@@ -75,7 +75,7 @@ def Lω_exact(ω): 　　　　　 # Exact BCF in the frequency domain (used in 
 
 ## Main Files Overview
 
-### `system.py`
+### `settings.py`
 
 Defines the system (oscillator) parameters and the directory name containing the spectral density data.
 
